@@ -14,9 +14,6 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Verify kubectl version
-        run: kubectl version --short
-
       - name: Show cluster info
         run: kubectl cluster-info
 
