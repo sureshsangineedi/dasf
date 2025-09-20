@@ -1,6 +1,6 @@
 name: Deploy to Kubernetes
 
-# Events that trigger the workflow
+# Trigger events
 on:
   push:
     branches:
@@ -22,10 +22,11 @@ jobs:
 
       - name: Configure kubeconfig
         run: |
+          mkdir -p $HOME/.kube
           echo "${{ secrets.KUBECONFIG_CONTENT }}" > $HOME/.kube/config
 
       - name: Apply Kubernetes manifests
         run: |
+          kubectl apply -f k8s-manifests/pvc.yaml     # Apply PVC first (if any)
           kubectl apply -f k8s-manifests/deployment.yaml
           kubectl apply -f k8s-manifests/service.yaml
-          kubectl apply -f k8s-manifests/pvc.yaml
