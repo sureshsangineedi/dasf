@@ -11,7 +11,7 @@ jobs:
     runs-on: self-hosted  # IMPORTANT: your self-hosted runner in the same network
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repository 
         uses: actions/checkout@v3
 
       - name: Verify kubectl version
