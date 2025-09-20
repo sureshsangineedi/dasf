@@ -1,6 +1,6 @@
 name: CI/CD Kubernetes Info
 
-on:
+on: 
   push:
     branches:
       - main
