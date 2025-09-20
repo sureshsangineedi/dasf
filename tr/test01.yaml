@@ -7,7 +7,7 @@ on:
   workflow_dispatch: 
 
 jobs:
-  kubernetes-info:
+  kubernetes-info: 
     runs-on: self-hosted  # IMPORTANT: your self-hosted runner in the same network
 
     steps:
