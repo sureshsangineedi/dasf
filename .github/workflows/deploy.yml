@@ -1,32 +1,28 @@
 name: Deploy to Kubernetes
 
-# Trigger events
 on:
   push:
     branches:
       - main
-  workflow_dispatch:   # manual trigger
+  workflow_dispatch:
 
 jobs:
   deploy:
-    runs-on: [self-hosted,window]
+    runs-on: self-hosted  # your Windows runner label
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: 'v1.27.4'
-
       - name: Configure kubeconfig
         run: |
-          mkdir -p $HOME/.kube
-          echo "${{ secrets.KUBECONFIG_CONTENT }}" > $HOME/.kube/config
+          New-Item -ItemType Directory -Force -Path $env:USERPROFILE\.kube
+          $env:KUBECONFIG_CONTENT | Out-File -FilePath $env:USERPROFILE\.kube\config -Encoding utf8
+        shell: powershell
 
       - name: Apply Kubernetes manifests
         run: |
-          kubectl apply -f k8s-manifests/pvc.yaml     # Apply PVC first (if any)
+          kubectl apply -f k8s-manifests/pvc.yaml
           kubectl apply -f k8s-manifests/deployment.yaml
           kubectl apply -f k8s-manifests/service.yaml
+        shell: powershell
