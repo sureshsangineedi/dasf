@@ -1,0 +1,36 @@
+name: Kubernetes Info with PVC and Memory
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  k8s-info:
+    runs-on: self-hosted   # Windows self-hosted runner
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Verify kubectl version
+        run: kubectl version --short
+
+      - name: Show cluster info
+        run: kubectl cluster-info
+
+      - name: Show nodes info
+        run: kubectl get nodes -o wide
+
+      - name: Show pods info (all namespaces)
+        run: kubectl get pods -A -o wide
+
+      - name: Show PVCs info (all namespaces)
+        run: kubectl get pvc -A
+
+      - name: Show node memory usage (raw metrics)
+        run: kubectl top nodes
+
+      - name: Show pod memory usage (optional)
+        run: kubectl top pods -A
